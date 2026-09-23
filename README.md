@@ -9,7 +9,19 @@ A lightweight, elegant Windows flip-clock screensaver inspired by classic retro 
 
 ---
 
-![Flip Clock Screensaver Preview](assets/preview.png)
+### 🕒 12-Hour Mode (with AM / PM Indicator)
+![Flip Clock 12-Hour PM Preview](assets/preview-12hr-pm.png)
+
+<details>
+<summary><b>Click to view more screenshots (12-Hour AM & 24-Hour Mode)</b></summary>
+
+#### 12-Hour Mode (AM)
+![Flip Clock 12-Hour AM Preview](assets/preview-12hr-am.png)
+
+#### 24-Hour Mode
+![Flip Clock 24-Hour Preview](assets/preview-24hr.png)
+
+</details>
 
 ---
 
