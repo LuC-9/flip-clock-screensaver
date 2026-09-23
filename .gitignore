@@ -1,0 +1,15 @@
+# Build and runtime outputs
+*.log
+startup.log
+*.tmp
+
+# IDE and temporary files
+.vs/
+.vscode/
+bin/
+obj/
+*.suo
+*.user
+
+# Internal planning artifacts
+docs/superpowers/
