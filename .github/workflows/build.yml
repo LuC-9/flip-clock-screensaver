@@ -1,0 +1,82 @@
+name: Build & Release
+
+on:
+  push:
+    branches: [ main ]
+    tags: [ 'v*' ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+  release:
+    types: [ published ]
+
+jobs:
+  build-windows:
+    name: Build Windows Screensaver (.scr)
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Compile Windows Screensaver
+        shell: powershell
+        run: |
+          .\build.ps1
+          if (-not (Test-Path "FliqloClock.scr")) {
+            Write-Error "FliqloClock.scr was not generated."
+            exit 1
+          }
+
+      - name: Package Windows Artifact
+        shell: powershell
+        run: |
+          Compress-Archive -Path FliqloClock.scr, LICENSE, README.md -DestinationPath FliqloClock-Windows.zip
+
+      - name: Upload Windows Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: FliqloClock-Windows
+          path: FliqloClock-Windows.zip
+
+  build-macos:
+    name: Build macOS Screensaver (.saver)
+    runs-on: macos-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Compile & Package macOS Screensaver
+        run: |
+          chmod +x macos/build.sh
+          ./macos/build.sh
+
+      - name: Upload macOS Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: FliqloClock-macOS
+          path: macos/build/FliqloClock-macOS.saver.zip
+
+  publish-release:
+    name: Publish Release Assets
+    needs: [ build-windows, build-macos ]
+    if: github.event_name == 'release' || startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download Windows Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: FliqloClock-Windows
+
+      - name: Download macOS Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: FliqloClock-macOS
+
+      - name: Upload Release Binaries
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            FliqloClock-Windows.zip
+            FliqloClock-macOS.saver.zip
