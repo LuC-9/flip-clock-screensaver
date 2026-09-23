@@ -29,13 +29,13 @@
   - `Settings.load() -> Settings`
   - `Settings.save(settings: Settings)`
 
-- [ ] **Step 1: Create `macos/Info.plist`**
+- [x] **Step 1: Create `macos/Info.plist`**
 Define bundle metadata declaring `NSPrincipalClass` as `FliqloClockView` and bundle package type `BNDL`.
 
-- [ ] **Step 2: Create `macos/Sources/Settings.swift`**
+- [x] **Step 2: Create `macos/Sources/Settings.swift`**
 Implement settings persistence using `ScreenSaverDefaults(forModuleWithName: "com.fliqloclock.macos.saver")`. Register default values (`is24Hour: true`, `showAmPm: true`, `showSeconds: true`, `clockScale: 1.0`).
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 ```bash
 git add -f macos/Info.plist macos/Sources/Settings.swift
 git commit -m "feat(macos): add bundle metadata and ScreenSaverDefaults settings model"
@@ -56,13 +56,13 @@ git commit -m "feat(macos): add bundle metadata and ScreenSaverDefaults settings
   - `tick(dt: TimeInterval) -> Bool` (returns true if animating and redraw required)
   - `draw(_ dirtyRect: NSRect)`
 
-- [ ] **Step 1: Implement card geometry and drawing layers**
+- [x] **Step 1: Implement card geometry and drawing layers**
 Draw dark rounded background card (`#141414`), split seam groove, bevel highlight, side hinge cutouts, and vertically bisected vector typography using CoreText / `NSFont.monospacedDigitSystemFont`.
 
-- [ ] **Step 2: Implement 3D folding perspective math & dynamic shading**
+- [x] **Step 2: Implement 3D folding perspective math & dynamic shading**
 Implement flip rotation ($0^\circ \to 180^\circ$ over 500ms ease-in-out curve). Calculate perspective trapezoid projection matching `FlipCard.cs`. Render dynamic darkening gradient on upper falling flap and drop shadow cast onto lower resting flap.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 ```bash
 git add -f macos/Sources/FlipCardView.swift
 git commit -m "feat(macos): implement split-flap 3D perspective rendering and animation engine"
@@ -83,16 +83,16 @@ git commit -m "feat(macos): implement split-flap 3D perspective rendering and an
   - `hasConfigureSheet: Bool { get }`
   - `configureSheet: NSWindow? { get }`
 
-- [ ] **Step 1: Implement `ScreenSaverView` initialization and display timer**
+- [x] **Step 1: Implement `ScreenSaverView` initialization and display timer**
 Subclass `ScreenSaverView`, set `animationTimeInterval = 1.0 / 60.0`, configure layer backing, and initialize Hours, Minutes, and Seconds `FlipCardView` subviews.
 
-- [ ] **Step 2: Implement responsive centering layout engine**
+- [x] **Step 2: Implement responsive centering layout engine**
 Calculate proportional card dimensions based on `bounds` and `settings.clockScale`. Center the group horizontally and vertically. Handle window resize and multi-monitor bounds.
 
-- [ ] **Step 3: Implement time-check and flap trigger loop**
+- [x] **Step 3: Implement time-check and flap trigger loop**
 In `animateOneFrame()`, query `Calendar.current` and update Hours, Minutes, and Seconds cards when values change.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 ```bash
 git add -f macos/Sources/FliqloClockView.swift
 git commit -m "feat(macos): implement FliqloClockView screensaver lifecycle and layout engine"
@@ -111,13 +111,13 @@ git commit -m "feat(macos): implement FliqloClockView screensaver lifecycle and 
   - `var window: NSWindow?`
   - Modal sheet with toggles for 24-Hour, AM/PM, Seconds, and Clock Scale slider.
 
-- [ ] **Step 1: Construct AppKit settings window sheet programmatically**
+- [x] **Step 1: Construct AppKit settings window sheet programmatically**
 Create `NSPanel` sheet containing checkboxes for 24-Hour mode, AM/PM indicator, Show Seconds, an `NSSlider` for Clock Scale (50% to 200%), and OK/Cancel buttons.
 
-- [ ] **Step 2: Implement user interaction handlers & persistence**
+- [x] **Step 2: Implement user interaction handlers & persistence**
 Load current values from `Settings.load()`. Disable AM/PM checkbox when 24-Hour mode is selected. Save changes on OK, restore on Cancel, and close sheet via `NSApp.endSheet(window)`.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 ```bash
 git add -f macos/Sources/SettingsViewController.swift
 git commit -m "feat(macos): implement native AppKit configuration sheet"
@@ -136,13 +136,13 @@ git commit -m "feat(macos): implement native AppKit configuration sheet"
   - Universal binary build target for `FliqloClock.saver`.
   - `build.sh` script to compile and package `FliqloClock-macOS.saver.zip`.
 
-- [ ] **Step 1: Create `macos/FliqloClock.xcodeproj/project.pbxproj`**
+- [x] **Step 1: Create `macos/FliqloClock.xcodeproj/project.pbxproj`**
 Configure Xcode project bundle target linking `AppKit.framework` and `ScreenSaver.framework`. Set deployment target to macOS 11.0, architectures `arm64` and `x86_64`, code signing identity `-` (ad-hoc).
 
-- [ ] **Step 2: Create `macos/build.sh`**
+- [x] **Step 2: Create `macos/build.sh`**
 Write a shell script executing `xcodebuild` with Release configuration, producing `build/FliqloClock.saver`, and archiving into `build/FliqloClock-macOS.saver.zip`. Make executable.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 ```bash
 git add -f macos/FliqloClock.xcodeproj/project.pbxproj macos/build.sh
 git commit -m "feat(macos): add Xcode project definition and command-line build script"
@@ -158,13 +158,13 @@ git commit -m "feat(macos): add Xcode project definition and command-line build 
 **Interfaces:**
 - Produces: Automated matrix workflow building both Windows (`.scr`) and macOS (`.saver.zip`) artifacts.
 
-- [ ] **Step 1: Create `.github/workflows/build.yml`**
+- [x] **Step 1: Create `.github/workflows/build.yml`**
 Define matrix build:
   - Windows job: runs on `windows-latest`, compiles `FliqloClock.scr` via MSBuild/`csc.exe`, uploads `FliqloClock-Windows.zip`.
   - macOS job: runs on `macos-latest`, compiles universal `FliqloClock.saver` via `xcodebuild`, uploads `FliqloClock-macOS.saver.zip`.
   - Release trigger: attaches artifacts to GitHub Releases on tag pushes.
 
-- [ ] **Step 2: Commit**
+- [x] **Step 2: Commit**
 ```bash
 git add .github/workflows/build.yml
 git commit -m "ci: add multi-platform GitHub Actions build workflow for Windows and macOS"
@@ -180,10 +180,10 @@ git commit -m "ci: add multi-platform GitHub Actions build workflow for Windows 
 **Interfaces:**
 - Produces: Updated cross-platform documentation with badges, installation guides, and architecture reference.
 
-- [ ] **Step 1: Update `README.md`**
+- [x] **Step 1: Update `README.md`**
 Add macOS badges, describe macOS `.saver` installation steps (Double-click or copy to `~/Library/Screen Savers`), add macOS configuration instructions, and document building on Mac.
 
-- [ ] **Step 2: Commit**
+- [x] **Step 2: Commit**
 ```bash
 git add README.md
 git commit -m "docs: update README with macOS installation, configuration, and build instructions"
