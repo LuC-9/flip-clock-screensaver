@@ -59,7 +59,7 @@ jobs:
   publish-release:
     name: Publish Release Assets
     needs: [ build-windows, build-macos ]
-    if: github.event_name == 'release' || startsWith(github.ref, 'refs/tags/v')
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -74,9 +74,26 @@ jobs:
         with:
           name: FliqloClock-macOS
 
-      - name: Upload Release Binaries
+      - name: Determine Release Tag
+        id: release_info
+        run: |
+          if [[ "${{ github.ref }}" == refs/tags/* ]]; then
+            echo "tag=${{ github.ref_name }}" >> $GITHUB_OUTPUT
+            echo "title=Release ${{ github.ref_name }}" >> $GITHUB_OUTPUT
+          else
+            echo "tag=v1.0.0" >> $GITHUB_OUTPUT
+            echo "title=Fliqlo Clock v1.0.0 (Windows & macOS)" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create or Update GitHub Release
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ steps.release_info.outputs.tag }}
+          name: ${{ steps.release_info.outputs.title }}
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+          make_latest: true
           files: |
             FliqloClock-Windows.zip
             FliqloClock-macOS.saver.zip
