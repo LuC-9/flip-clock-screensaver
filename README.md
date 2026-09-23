@@ -60,6 +60,9 @@ A lightweight, elegant flip-clock screensaver inspired by classic retro mechanic
 3. Open macOS **System Settings** > **Wallpaper / Screen Saver**, select **FliqloClock**, and set your idle timeout.
 4. Click **Options** to customize 24-hour mode, AM/PM label, seconds card, and clock scale.
 
+> [!TIP]
+> **macOS Gatekeeper Note:** If macOS displays a message saying the screensaver cannot be opened because it is from an unidentified developer, right-click `FliqloClock.saver` in Finder, hold `Option`, and select **Open** (or run `xattr -d com.apple.quarantine ~/Library/Screen\ Savers/FliqloClock.saver` in Terminal).
+
 ---
 
 ### 🪟 Windows Installation (`.scr`)
