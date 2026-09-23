@@ -12,6 +12,7 @@ echo "============================================="
 BUILD_DIR="$SCRIPT_DIR/build"
 rm -rf "$BUILD_DIR"
 mkdir -p "$BUILD_DIR"
+xattr -w com.apple.xcode.CreatedByBuildSystem true "$BUILD_DIR" 2>/dev/null || true
 
 # Build universal binary using xcodebuild
 xcodebuild \
@@ -20,7 +21,7 @@ xcodebuild \
   -configuration Release \
   -destination 'generic/platform=macOS' \
   CONFIGURATION_BUILD_DIR="$BUILD_DIR" \
-  clean build
+  build
 
 if [ ! -d "$BUILD_DIR/FliqloClock.saver" ]; then
     echo "Error: Build failed - $BUILD_DIR/FliqloClock.saver not found."
